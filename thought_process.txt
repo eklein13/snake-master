@@ -1,0 +1,25 @@
+1. We need a new module to do the calculations. We can use an abstract class (interface)
+IPathFinder, which provides us with the algorithmic logic.
+
+2. This module can be tested separately using unit tests. We can also implement a simple algorithm
+to test the integration on a small scale, before creating an efficient algorithm.
+
+3. I chose to implement BFS as the path finding algorithm, because it finds the shortest path, and is still
+considered simple but also fast enough on a small scale. If large scale was a requirement, I would consider
+implementing an algorithm such as A* on the same interface.
+I tested the game with a larger board (50*50) and it was still playable.
+I did not add a constant "n" because it was not necessary.
+
+4. I considered defining the pathfinder algorithm using the program argument, i.e. calling "./snake bfs"
+to run with BFS. I didn't have time to do it in time.
+
+5. BFS implementation: I used an unordered set whenever possible to minimize search time. I also used a
+bitset because it's an efficient way to check for visited nodes.
+
+6. BFS testing: During the implementation I tested the BFS module as a separate unit (the main function is
+in a comment). I tested it with edge cases to make sure the runtime was good enough.
+
+7. I added an argument to set a "help me" state. I considered making it modifiable during the game by
+creating a new input option but I didn't have enough time.
+
+8. I rearranged SnakeMap methods and fields and made them private where possible.
