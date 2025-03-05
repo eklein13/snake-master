@@ -68,7 +68,7 @@ BFSAlgo::PositionSet BFSAlgo::find_path(const Position& src, const Position& des
 
 
 /*
-* A main function used to tests this algorithm as a seperate unit
+* main function used to test this algorithm as a seperate unit
 */
 /*
 int main()
