@@ -7,18 +7,23 @@
 #include <time.h>
 #include "macros.h"
 
+#define GREEN_TEXT "\033[32m"
+#define RESET_TEXT "\033[0m"
+
 using namespace std;
 
-SnakeMap::SnakeMap(Snake *snake)
+SnakeMap::SnakeMap(Snake *snake, const IPathFinder* path_finder)
 {
     this->snake = snake;
+    this->path_finder = path_finder;
     clear_map(this->map_array);
     srand(time(NULL));
     update_snake_food(true);
 }
 
-void SnakeMap::redraw(void)
+void SnakeMap::redraw(bool draw_path)
 {
+    const bool food_eaten = snake->food_eaten;
     clear_map(this->map_array);
     for (int i = 0; i < MAP_END; i++)
     {
@@ -34,11 +39,26 @@ void SnakeMap::redraw(void)
     update_snake_head(map_array, snake);
     update_snake_food(false);
     map_array[snake_food.first][snake_food.second] = SNAKE_FOOD_CHAR;
+
+    // update the path if needed
+    if (draw_path && food_eaten)
+    {
+        update_path();
+    }
+
     for (int i = 0; i < MAP_HEIGHT; i++)
     {
         for (int j = 0; j < MAP_WIDTH; j++)
         {
-            cout << map_array[i][j] << " ";
+            // If position is in the path make it green 
+            if (path.find(make_pair(i, j)) != path.end())
+            {
+                cout << GREEN_TEXT << map_array[i][j] << RESET_TEXT << " ";
+            }
+            else
+            {
+                cout << map_array[i][j] << " ";
+            }
         }
         cout << endl;
     }
@@ -61,6 +81,11 @@ void SnakeMap::update_snake_food(bool force_update)
             }
         }
     }
+}
+
+void SnakeMap::update_path()
+{
+    path = path_finder->find_path(snake->snake_head, snake_food, snake->snake_parts);
 }
 
 void clear_map(char map_array[MAP_HEIGHT][MAP_WIDTH])
